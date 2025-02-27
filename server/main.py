@@ -49,6 +49,8 @@ def get_best_move(board_state: BoardState):
         raise HTTPException(status_code=400, detail=f"Unexpected error: {str(e)}")
     
     act_values = agent.predict(state, verbose=0)
-    best_action = int(np.argmax(act_values[0]))  # Convert to native Python int
 
-    return {"best_move": best_action}
+    # create a list of all of the best moves by order
+    best_moves = np.argsort(act_values[0])[::-1].tolist()
+
+    return {"best_moves": best_moves}

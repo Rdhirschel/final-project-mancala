@@ -1,20 +1,25 @@
+//'use server'
 type Player = "user" | "ai";
 
 export class GameModel 
 {
     board: number[];
     currentPlayer: Player;
+    started: Player;
     gameOver: boolean;
     message: string;
     listeners: (() => void)[];
+    lastMovedPit: number | null;
 
     constructor() 
     {
         this.board = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
         this.currentPlayer = "user";
+        this.started = "user";
         this.gameOver = false;
         this.message = "";
         this.listeners = [];
+        this.lastMovedPit = null;
     }
 
     addListener(listener: () => void) 
@@ -32,6 +37,8 @@ export class GameModel
         this.board = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
         this.currentPlayer = initialCurrent;
         this.gameOver = false;
+        this.started = initialCurrent;
+        this.lastMovedPit = null;
         this.message =
             initialMessage || (initialCurrent === "user" ? "Your Turn" : "AI Starts"); // Conditionally set the message if not provided
         this.notifyListeners();
@@ -44,11 +51,24 @@ export class GameModel
         return pitIndex >= 7 && pitIndex <= 12 && this.board[pitIndex] > 0;
     }
 
+    getAllValidMoves(player: Player): number[]
+    {
+        const validMoves = [];
+        for (let i = 0; i < 14; i++)
+        {
+            if (this.isValidMove(i, player))
+                validMoves.push(i);
+        }
+        return validMoves;
+    }
+
     makeMove(pitIndex: number) 
     {
         if (this.gameOver || !this.isValidMove(pitIndex, this.currentPlayer))
             return;
 
+        this.lastMovedPit = pitIndex;
+        
         let stones = this.board[pitIndex];
         this.board[pitIndex] = 0;
         let currentIndex = pitIndex;
@@ -67,6 +87,9 @@ export class GameModel
             this.board[currentIndex]++;
             lastStoneIndex = currentIndex;
         }
+
+        // Update lastMovedPit to the final position
+        this.lastMovedPit = lastStoneIndex;
 
         // Check for an extra turn
         const extraTurn =
@@ -145,6 +168,5 @@ export class GameModel
             this.message = "Tie Game!";
 
         return true;
-
     }
 }
