@@ -49,5 +49,4 @@ python-training-files/__pycache__/
 server/__pycache__/
 
 # Mancala agent saves
-mancala_agent_final.keras
-mancala_agent_saved.keras
+model_saves/

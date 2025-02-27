@@ -96,13 +96,13 @@ def train_agent(episodes=2000):
         
         # Save model periodically - Checkpoint
         if (episode + 1) % 100 == 0:
-            agent.save_model(f"mancala_agent_saved.keras")
+            agent.save_model(f"model_saves/mancala_agent_saved.keras")
             
         print(f"Episode: {episode+1}/{episodes} | Wins: {wins} | Losses: {losses} | Ties: {ties} | ε: {agent.epsilon:.3f} | Reward: {episode_reward:.2f} | Position: {agent_position}")
 
 
     # Save final model
-    agent.save_model("mancala_agent_final.keras")
+    agent.save_model("model_saves/mancala_agent_final.keras")
 
     return rewards, win_loss_history
 
