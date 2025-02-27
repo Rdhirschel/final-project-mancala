@@ -44,3 +44,10 @@ next-env.d.ts
 # python-training-files
 python-training-files/PER/__pycache__/
 python-training-files/__pycache__/
+
+# server
+server/__pycache__/
+
+# Mancala agent saves
+mancala_agent_final.keras
+mancala_agent_saved.keras

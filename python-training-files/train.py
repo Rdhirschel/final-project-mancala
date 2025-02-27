@@ -7,7 +7,7 @@ import random
 random.seed(42)
 np.random.seed(42)
 
-def train_agent(episodes=3000):
+def train_agent(episodes=2000):
     """Trains a DQN agent to play Mancala."""
 
     agent = DQNAgent(15, 6) # State size = 15: board + current player indicator

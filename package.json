@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.22.0",
+    "axios": "^1.8.1",
     "next": "15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

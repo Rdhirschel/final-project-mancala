@@ -11,16 +11,15 @@ from tensorflow.keras.optimizers import Adam                                    
 from tensorflow.keras.utils import register_keras_serializable                              # type: ignore
 from PER.PrioritizedReplayBuffer import PrioritizedReplayBuffer
 
-# Set random seeds for reproducibility
-random.seed(42)
-np.random.seed(42)
-tf.random.set_seed(42)
-
-# Global function for combining streams, registered for serialization.
 @register_keras_serializable()
 def _combine_streams(inputs):
     val, adv = inputs
     return val + (adv - tf.reduce_mean(adv, axis=1, keepdims=True))
+
+# Set random seeds for reproducibility
+random.seed(42)
+np.random.seed(42)
+tf.random.set_seed(42)
 
 class DQNAgent:
     def __init__(self, state_size, action_size, learning_rate=0.001):
