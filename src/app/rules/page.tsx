@@ -20,7 +20,7 @@ const Rules = () => {
           
           <div className="my-10 flex justify-center">
             <img 
-              src="/images/mancala-board.png" 
+              src="/images/mancala_board.png" 
               alt="Mancala Board" 
               className="max-w-full h-auto rounded-lg shadow-lg border-4 border-slate-400 dark:border-slate-600" 
             />
