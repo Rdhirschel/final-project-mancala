@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import GameView from './components/GameView';
-import Navbar from './components/navbar';
+import GameView from "../components/game/GameView";
+import Navbar from "../components/layout/navbar";
 
 export default function Page() {
-  
-  return < >
-    <Navbar />
-    <GameView />
-  </>
+  return (
+    <>
+      <Navbar />
+      <GameView />
+    </>
+  );
 }

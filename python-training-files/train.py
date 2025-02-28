@@ -40,7 +40,7 @@ def train_agent(episodes=2000):
 
                 all_moves = [a for a in range(6)]
                 all_invalid = [a for a in all_moves if a not in valid_actions]
-                if all_invalid and random.uniform(0,1) <= 0.05: # 5% chance of storing invalid move, to make the agent learn from it
+                if all_invalid and random.uniform(0,1) <= 0.1: # 10% chance of storing invalid move, to make the agent learn from it
                     random_invalid_for_replay = random.choice(all_invalid)
                     agent.remember(initial_state, random_invalid_for_replay, -300, state, False) # Store invalid move with -300 reward
 

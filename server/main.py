@@ -1,7 +1,7 @@
 """
 Endpoint to get the best move for the given board state.
 Args:
-    board_state (BoardState): The current state of the board, expected to be a list or array of length 15.
+    board_state (BoardState): The current state of the board, expected to be a list or array of length 15 (state of the board + current player indicator).
 Returns:
     dict: A dictionary containing the best move with the key "best_move".
 Raises:
