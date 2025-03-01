@@ -24,6 +24,12 @@ class MancalaEnv:
         if self.current_player == 0:
             return [i for i in range(0, 6) if self.board[i] > 0]
         return [i for i in range(7, 13) if self.board[i] > 0]
+    
+    def actions(self):
+        """Returns a list of all possible actions for the current player."""
+        if self.current_player == 0:
+            return [i for i in range(0, 6)]
+        return [i for i in range(7, 13)]
 
     def make_move(self, action):
         """Executes a move for the current player."""

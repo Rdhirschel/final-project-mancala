@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Final Project Mancala
 
-## Getting Started
+## Overview
 
-First, run the development server:
+The Final Project Mancala is designed as a web-based version of the classic Mancala game. It features:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- A responsive UI with dynamic theme support (dark, light, or system).
+- Game logic managed using React state and controllers.
+- An AI opponent trained using Python scripts.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The AI moves are backed by machine learning algorithms that were developed and trained in the [`python-training-files`](./python-training-files) directory. Key training files such as [`DQNAgent.py`](./python-training-files/DQNAgent.py) and [`train.py`](./python-training-files/train.py) were used to optimize the agent’s strategy.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+For further details on the project documentation including development decisions and game rules, you can refer to the docs page linked in the navbar.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+- **src/**  
+    Contains the main application code that initializes the website including:
+    - **components/** – UI components such as the game board, navbar, and theme provider.
+    - **app/** – Next.js pages and global styles.
+    - **controllers/** and **models/** – Manage game logic and state.
 
-To learn more about Next.js, take a look at the following resources:
+- **python-training-files/**  
+    Includes the Python scripts used to train the AI opponent. Below is a brief overview:
+    - **Agent Definition & Model Architecture:**  
+        The core AI is implemented in [`DQNAgent.py`](./python-training-files/DQNAgent.py). This file defines the agent using a dueling DQN architecture with methods such as `act`, `remember`, and `replay` for playing and learning during training.
+    
+    - **Prioritized Experience Replay & Dueling DQN:**  
+        The project leverages prioritized experience replay. Supporting modules such as [`SumTree.py`](./python-training-files/PER/SumTree.py) and [`PrioritizedReplayBuffer.py`](./python-training-files/PER/PrioritizedReplayBuffer.py) implement the data structures and algorithms required for efficient sampling and storage of training experiences.
+    
+    - **Training and Testing:**  
+        The training loop is managed in [`train.py`](./python-training-files/train.py). This script sets up the training environment, instantiates the AI agent, and runs episodes where the agent learns from game interactions. The model is periodically saved (e.g., to `model_saves/mancala_agent_saved.keras`). Testing scripts, such as [`agent_testing.py`](./python-training-files/agent_testing.py), are used to evaluate the agent's performance under various conditions.
+    
+    - **Other Files:**  
+        Additional scripts offer utility functions for random gameplay, performance metrics, and visualization of learning trends.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **server/main.py:**  
+    This file contains the API needed by the project. It provides endpoints that may handle requests from the frontend, such as game state updates or processing moves by the AI. This API file serves as an interface between the client-side application and any server-side logic required by the game.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **public/**  
+    Hosts static assets such as images, sounds, and icons.
 
-## Deploy on Vercel
+- **requirements.txt:**  
+    Contains Python dependencies:
+    fastapi>=0.70.0  
+    tensorflow>=2.0  
+    numpy  
+    matplotlib
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **package.json:**  
+Manages the frontend dependencies such as Next.js, React, Tailwind CSS, and Lucide Icons.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Running the Project Locally
+
+Follow these steps to set up and run the entire project on your local machine.
+
+### 1. Install Dependencies
+
+#### Frontend (Next.js)
+- Open a terminal in the project root.
+- Install Node.js packages with:
+    ```bash
+    npm install
+    ```
+    This installs all necessary packages listed in package.json.
+
+#### Backend (Python)
+- Install Python dependencies with:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+### 2. Running the Backend Server
+- In the activated virtual environment, start the backend server by running:
+    ```bash
+    fastapi dev server/main.py
+    ```
+- This should initialize the API endpoints needed by the project.
+
+### 3. Running the Frontend Application
+
+- In a separate terminal (with Node.js installed), start the Next.js development server:
+    ```bash
+    npm run dev
+    ```
+- Open your browser at [http://localhost:3000](http://localhost:3000) to view the application.
+
+### 4. Additional Notes
+
+- Ensure that both the backend and frontend are running simultaneously for full functionality.
+- Refer to any additional comments within the code for a deeper explanation on how everything works

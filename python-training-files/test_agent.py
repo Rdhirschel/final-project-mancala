@@ -21,7 +21,16 @@ def test_agent(agent, position, game_amount=5_000):
             if env.current_player == position:
                 # Convert valid actions to a local index [0-5] based on position
                 mapped = [v - 7 * position for v in valid]
-                action = agent.act(state, mapped)  # Agent selects action
+                # If no mapped moves available, break out of loop (game over)
+                if not mapped:
+                    break
+                candidate_moves = agent.act(state, mapped)  # Agent selects candidate moves
+                # Select the first candidate move; if candidate_moves is empty, fallback to a random move
+                if candidate_moves:
+                    action = candidate_moves[0]
+                else:
+                    action = random.choice(mapped)
+                    
                 real_action = action + 7 * position  # Convert back to board index
                 env.make_move(real_action)  # Execute move
                 state = env.get_state()  # Update state
@@ -30,6 +39,9 @@ def test_agent(agent, position, game_amount=5_000):
                     break
                 # Opponent selects a random move
                 mapped = [v - 7 * (1 - position) for v in valid]
+                # If no mapped moves available, break out of loop
+                if not mapped:
+                    break
                 action = random.choice(mapped)
                 real_action = action + 7 * (1 - position)
                 env.make_move(real_action)
