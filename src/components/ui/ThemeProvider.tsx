@@ -53,7 +53,6 @@ export function ThemeProvider({ children, defaultTheme = "system" }: ThemeProvid
             // .matches is a boolean that indicates whether the media query is true or false.
             newTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         } 
-        
         // Set the theme to the specified theme.
         else 
         {
@@ -62,6 +61,17 @@ export function ThemeProvider({ children, defaultTheme = "system" }: ThemeProvid
 
         // Add the new theme class to the root. The root element is the <html> element in the DOM. 
         root.classList.add(newTheme);
+
+        // Set friendlier CSS variables for a more user-friendly light mode.
+        // These variables can be used in your CSS for background, text, etc.
+        if (newTheme === "light") {
+            root.style.setProperty("--background-color", "#f9fafb"); // Soft light background
+            root.style.setProperty("--text-color", "#111827"); // Dark text for readability
+        } else {
+            root.style.setProperty("--background-color", "#1f2937"); // Refined dark background
+            root.style.setProperty("--text-color", "#f3f4f6"); // Light text
+        }
+        
         setComputedTheme(newTheme);
     }, [theme]);
 
