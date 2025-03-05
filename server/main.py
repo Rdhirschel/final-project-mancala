@@ -38,6 +38,19 @@ def read_root():
 
 @app.post("/best_move/")
 def get_best_move(board_state: BoardState):
+    if len(board_state.state) != 15:
+        raise HTTPException(status_code=400, detail="Input shape must be (15,)")
+    
+    # The board should be switched between 0 and 1 to match the agent's training data.
+    # In the web app, the AI is always 1, so we need to switch the board if the AI is "actually" 0.
+    if (board_state.state[-1] == 0): 
+        for i in range(0, 7):
+            temp = board_state.state[i]
+            board_state.state[i] = board_state.state[i + 7]
+            board_state.state[i + 7] = temp
+    
+    print(board_state)
+
     try:
         state = np.array(board_state.state)
         if state.shape[0] != 15:

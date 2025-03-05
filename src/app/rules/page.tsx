@@ -45,7 +45,7 @@ const Rules = () => {
                 Game Play
               </h2>
               <ol className="list-decimal pl-8 space-y-4 mb-8 text-lg">
-                <li className="p-4 bg-slate-800 dark:bg-slate-700 rounded font-medium">
+                <li className="p-4 bg-slate-800 dark:bg-slate-700 dark:text- rounded font-medium">
                   <strong className="text-yellow-300 text-xl">Moving Stones:</strong> On your turn, select one of the pits on your side of the board. All stones from that pit are picked up and distributed one by one counterclockwise into each pit, including your own store but skipping your opponent's store.
                 </li>
                 <li className="p-4 bg-slate-800 dark:bg-slate-700 rounded font-medium">

@@ -64,7 +64,7 @@ class GameView extends React.Component<GameViewProps, State> {
         if (typeof window !== "undefined") {
             this.moveSound = new Audio("/sounds/move.wav");
             this.winSound = new Audio("/sounds/win.wav");
-            this.loseSound = new Audio("/sounds/win.wav");
+            this.loseSound = new Audio("/sounds/lose.wav");
         }
     }
 

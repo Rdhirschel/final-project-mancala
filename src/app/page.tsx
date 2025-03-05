@@ -9,10 +9,8 @@ export default function Page() {
   
   return (
     <Layout >
-      <ThemeProvider defaultTheme="system">
         <Navbar />
         <GameView />
-      </ThemeProvider>
     </Layout>
   );
 }

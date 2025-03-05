@@ -5,12 +5,13 @@ import numpy as np
 import random
 import tensorflow as tf
 from tensorflow.keras import Model                                                          # type: ignore
-from tensorflow.keras.layers import Dense, Input, Lambda, Dropout, BatchNormalization       # type: ignore
-from tensorflow.keras.regularizers import l2                                                # type: ignore
+from tensorflow.keras.layers import Dense, Input, Lambda                                    # type: ignore
 from tensorflow.keras.optimizers import Adam                                                # type: ignore
 from tensorflow.keras.utils import register_keras_serializable                              # type: ignore
 from PER.PrioritizedReplayBuffer import PrioritizedReplayBuffer
 
+# The register_keras_serializable decorator is used to register the custom Lambda layer with Keras. 
+# This makes it possible to save and load the model without any issues.
 @register_keras_serializable()
 def _combine_streams(inputs):
     val, adv = inputs
@@ -80,19 +81,28 @@ class DQNAgent:
         Returns a list of candidate actions (local indices) sorted by descending Q-value.
         If epsilon-greedy triggers, simply returns a shuffled version of valid_actions.
         """
+
+        # If no valid actions, return an empty list
         if not valid_actions:
             return []
+        
+        # Epsilon-greedy strategy
         if np.random.rand() <= self.epsilon:
             random.shuffle(valid_actions)
             return valid_actions
+        
+        # Get Q-values for the current state
         state = state.reshape(1, -1)
         act_values = self.model.predict(state, verbose=0)
+
         # Rank valid actions by their Q-values in descending order
         ranked = sorted(valid_actions, key=lambda a: act_values[0][a], reverse=True)
         return ranked
 
     def replay(self):
         """Trains the model using experiences from memory."""
+
+        # If not enough samples in memory, do nothing
         if self.memory.size() < self.batch_size:
             return
 
@@ -113,14 +123,17 @@ class DQNAgent:
             errors[i] = abs(targets[i][a] - target)
             targets[i][a] = target
 
+        # Update the priorities in the replay buffer using the TD errors and update the model.
         self.memory.update_priorities(indices, errors)
         self.model.fit(states, targets, batch_size=self.batch_size, sample_weight=is_weights, verbose=0)
 
+        # Track training steps and update target model periodically
         self.training_step += 1
         if self.training_step % self.update_target_freq == 0:
             self._update_target_model()
             print("Target model updated")
         
+        # Decay epsilon and update beta
         self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
         self.beta = min(self.beta_max, self.beta + self.beta_increment) 
 
