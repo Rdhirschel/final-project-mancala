@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Mancala Website | Mancala by Nir Hirschel",
   description: "A 12th Grade project for the Mancala game.",
   icons: {
-    icon: { url: "/favicon.ico" }  // Absolute path starting with /
+    icon: { url: "/images/favicon.ico" }  // Absolute path starting with /
   }
 }
 
