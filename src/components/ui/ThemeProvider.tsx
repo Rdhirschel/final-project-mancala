@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { createContext, useContext, useLayoutEffect, useState } from "react";
+import { createContext, useContext, useLayoutEffect, useState, useEffect } from "react";
 
 type Theme = "dark" | "light" | "system";
 
@@ -31,13 +31,25 @@ export const ThemeProviderContext = createContext<ThemeProviderState>(initialSta
 
 // Define the ThemeProvider component.
 export function ThemeProvider({ children, defaultTheme = "system" }: ThemeProviderProps) {
-    const [theme, setTheme] = useState<Theme>(() => {
-        if (typeof window !== "undefined") 
-        {
-            return (localStorage.getItem("theme") as Theme) || defaultTheme;
+    // Initialize theme from localStorage with improved error handling
+    const [theme, setTheme] = useState<Theme>(defaultTheme);
+    
+    // Load theme from localStorage during first render
+    useEffect(() => {
+        // This effect runs only once on component mount
+        if (typeof window !== "undefined") {
+            try {
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme && ["light", "dark", "system"].includes(savedTheme as Theme)) {
+                    setTheme(savedTheme as Theme);
+                    console.log("Restored theme from localStorage:", savedTheme);
+                }
+            } catch (e) {
+                console.error("Failed to read theme from localStorage:", e);
+            }
         }
-        return defaultTheme;
-    }); // Initialize the theme state with the default theme.
+    }, []);
+    
     const [computedTheme, setComputedTheme] = useState<"dark" | "light">("light"); // Initialize the computed theme state with the light theme.
 
     // Update the theme when the theme state changes. 
@@ -80,9 +92,16 @@ export function ThemeProvider({ children, defaultTheme = "system" }: ThemeProvid
     const value = {
         theme,
         computedTheme,
-        setTheme: (theme: Theme) => {
-            localStorage.setItem("theme", theme);
-            setTheme(theme);
+        setTheme: (newTheme: Theme) => {
+            try {
+                // Save to localStorage before updating state to ensure storage happens first
+                localStorage.setItem("theme", newTheme);
+                console.log("Saved theme to localStorage:", newTheme);
+                setTheme(newTheme);
+            } catch (e) {
+                console.error("Failed to save theme to localStorage:", e);
+                setTheme(newTheme); // Still update the state even if localStorage fails
+            }
         },
     };
 

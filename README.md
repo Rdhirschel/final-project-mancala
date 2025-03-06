@@ -35,7 +35,7 @@ For further details on the project documentation including development decisions
         Additional scripts offer utility functions for random gameplay, performance metrics, and visualization of learning trends.
 
 - **server/main.py:**  
-    This file contains the API needed by the project. It provides endpoints that may handle requests from the frontend, such as game state updates or processing moves by the AI. This API file serves as an interface between the client-side application and any server-side logic required by the game.
+    This file contains the API needed by the project. It provides endpoints that may handle requests from the frontend, such as game state updates or processing moves by the AI. This API file serves as an interface between the client-side application and any server-side logic required by the game. The API is hosted [under this repository](https://github.com/Rdhirschel/python-api-mancala)
 
 - **public/**  
     Hosts static assets such as images, sounds, and icons.

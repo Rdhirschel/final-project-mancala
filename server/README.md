@@ -1,0 +1,1 @@
+This is the API service hosted in [this repository](https://github.com/Rdhirschel/python-api-mancala)
