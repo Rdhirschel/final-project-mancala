@@ -1,6 +1,5 @@
 "use client";
 
-import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import GameView from "@/components/game/GameView";
 import Navbar from "@/components/layout/navbar";
 import Layout from "@/app/layout";

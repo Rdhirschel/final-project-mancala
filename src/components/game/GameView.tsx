@@ -34,9 +34,9 @@ class GameView extends React.Component<GameViewProps, State> {
     controller: GameController;
 
     // Audio objects for sound effects.
-    moveSound: any;
-    winSound: any;
-    loseSound: any;
+    moveSound: HTMLAudioElement | null = null;
+    winSound: HTMLAudioElement | null = null;
+    loseSound: HTMLAudioElement | null = null;
 
     constructor(props: GameViewProps) {
         super(props);
@@ -91,18 +91,18 @@ class GameView extends React.Component<GameViewProps, State> {
 
             if (this.state.soundEnabled) {
                 if (this.model.gameOver) {
-                    if (this.model.message === "You Win!") {
+                    if (this.model.message === "You Win!" && this.winSound !== null) {
                         this.winSound.play().catch((e: Error) => console.warn("Sound failed:", e));
                         if (navigator.vibrate) {
                             navigator.vibrate([100, 50, 100, 50, 100]);
                         }
-                    } else if (this.model.message === "AI Wins!") {
+                    } else if (this.model.message === "AI Wins!" && this.loseSound !== null) {
                         this.loseSound.play().catch((e: Error) => console.warn("Sound failed:", e));
                         if (navigator.vibrate) {
                             navigator.vibrate(500);
                         }
                     }
-                } else {
+                } else if (this.moveSound !== null) {
                     this.moveSound.play().catch((e: Error) => console.warn("Sound failed:", e));
                     if (navigator.vibrate) {
                         navigator.vibrate(50);

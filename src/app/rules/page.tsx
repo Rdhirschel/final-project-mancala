@@ -4,6 +4,7 @@ import React from 'react';
 import Navbar from '@/components/layout/navbar';
 import { ThemeProvider } from '@/components/ui/ThemeProvider';
 import Layout from "@/app/layout"
+import Image from 'next/image';
 
 const Rules = () => {
   return (
@@ -26,13 +27,16 @@ const Rules = () => {
                 At the beginning of the game, four stones are placed in each of the twelve smaller pits.
               </p>
               
-              <div className="my-10 flex justify-center">
-                <img 
+                <div className="my-10 flex justify-center">
+                <Image 
                   src="/images/mancala_board.png" 
-                  alt="Mancala Board" 
-                  className="max-w-full h-auto rounded-lg shadow-lg border-4 border-slate-400 dark:border-slate-600" 
+                  className="rounded-lg shadow-lg" 
+                  alt="Mancala board" 
+                  width={600} 
+                  height={400} 
+                  priority
                 />
-              </div>
+                </div>
               
               <h2 className="text-3xl font-bold mb-6 text-blue-700 dark:text-blue-300 border-b-4 border-blue-700 dark:border-blue-300 pb-2">
                 Objective
@@ -46,13 +50,13 @@ const Rules = () => {
               </h2>
               <ol className="list-decimal pl-8 space-y-4 mb-8 text-lg">
                 <li className="p-4 bg-slate-800 dark:bg-slate-700 dark:text- rounded font-medium">
-                  <strong className="text-yellow-300 text-xl">Moving Stones:</strong> On your turn, select one of the pits on your side of the board. All stones from that pit are picked up and distributed one by one counterclockwise into each pit, including your own store but skipping your opponent's store.
+                  <strong className="text-yellow-300 text-xl">Moving Stones:</strong> On your turn, select one of the pits on your side of the board. All stones from that pit are picked up and distributed one by one counterclockwise into each pit, including your own store but skipping your opponent&apos;s store.
                 </li>
                 <li className="p-4 bg-slate-800 dark:bg-slate-700 rounded font-medium">
                   <strong className="text-yellow-300 text-xl">Extra Turn:</strong> If the last stone you drop lands in your own store, you get another turn.
                 </li>
                 <li className="p-4 bg-slate-800 dark:bg-slate-700 rounded font-medium">
-                  <strong className="text-yellow-300 text-xl">Capturing Stones:</strong> If the last stone you drop lands in an empty pit on your side, you capture that stone and all stones in the pit directly opposite on your opponent's side. All captured stones go into your store.
+                  <strong className="text-yellow-300 text-xl">Capturing Stones:</strong> If the last stone you drop lands in an empty pit on your side, you capture that stone and all stones in the pit directly opposite on your opponent&apos;s side. All captured stones go into your store.
                 </li>
                 <li className="p-4 bg-slate-800 dark:bg-slate-700 rounded font-medium">
                   <strong className="text-yellow-300 text-xl">Game End:</strong> The game ends when all six pits on one side of the board are empty. The player who still has stones on their side captures those stones and adds them to their store.
@@ -67,13 +71,13 @@ const Rules = () => {
               </h2>
               <ul className="list-disc pl-8 space-y-3 text-lg">
                 <li className="p-4 bg-yellow-600 dark:bg-yellow-700 text-white rounded font-medium">
-                  Try to end your turn in your Mancala to get an extra move
+                  Try to end your turn in your bank to get an extra move
                 </li>
                 <li className="p-4 bg-yellow-600 dark:bg-yellow-700 text-white rounded font-medium">
                   Keep track of how many stones are in each pit to plan captures
                 </li>
                 <li className="p-4 bg-yellow-600 dark:bg-yellow-700 text-white rounded font-medium">
-                  Sometimes it's better to keep stones on your side to set up future moves
+                  Sometimes it&apos;s better to keep stones on your side to set up future moves
                 </li>
                 <li className="p-4 bg-yellow-600 dark:bg-yellow-700 text-white rounded font-medium">
                   Sabotaging the Enemy moves by distributing stones on their side can be beneficial
