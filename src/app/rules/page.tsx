@@ -1,10 +1,14 @@
-'use client';
-
 import React from 'react';
 import Navbar from '@/components/layout/navbar';
 import { ThemeProvider } from '@/components/ui/ThemeProvider';
 import Layout from "@/app/layout"
 import Image from 'next/image';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Mancala Rules | Mancala by Nir Hirschel',
+  description: 'Learn how to play Mancala, including setup, objectives, and game rules.',
+}
 
 const Rules = () => {
   return (

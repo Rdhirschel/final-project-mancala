@@ -5,7 +5,7 @@ import { GameModel } from "@/models/GameModel";
 import { GameController } from "@/controllers/GameController";
 import { ThemeProviderContext } from "@/components/ui/ThemeProvider";
 
-type GameViewProps = {}; // No props needed
+type GameViewProps = Record<string, never>; // Empty props type
 
 // This interface defines the state of the game view.
 // • board: An array of 14 numbers representing the pits and stores.

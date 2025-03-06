@@ -75,7 +75,7 @@ export class GameModel
         if (this.gameOver || !this.isValidMove(pitIndex, this.currentPlayer))
             return;
         
-        let stones = this.board[pitIndex];
+        const stones = this.board[pitIndex];
         this.board[pitIndex] = 0;
         let currentIndex = pitIndex;
         let lastStoneIndex = -1;
