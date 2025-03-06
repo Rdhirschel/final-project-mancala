@@ -1,34 +1,34 @@
-"""
-Endpoint to get the best move for the given board state.
-Args:
-    board_state (BoardState): The current state of the board, expected to be a list or array of length 15 (state of the board + current player indicator).
-Returns:
-    dict: A dictionary containing the best move with the key "best_move".
-Raises:
-    HTTPException: If the input shape is not (15,) or if there is any other error during processing.
-"""
-
-import os 
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+import os
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras.utils import register_keras_serializable # type: ignore
+import onnxruntime as ort
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
-@register_keras_serializable()
-def _combine_streams(inputs):
-    val, adv = inputs
-    return val + (adv - tf.reduce_mean(adv, axis=1, keepdims=True))
-
+# Initialize FastAPI app
 app = FastAPI()
 
-# Load the trained model
-model_path = "public/assets/mancala_agent_final.keras"
-custom_objects = {"combine_streams": _combine_streams}
-agent = tf.keras.models.load_model(model_path, custom_objects=custom_objects)
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+# Path to the ONNX model file
+onnx_model_path = os.environ.get("MODEL_PATH", "public/assets/mancala_agent_final.onnx")
+
+# Initialize ONNX Runtime session
+try:
+    session = ort.InferenceSession(onnx_model_path)
+    input_name = session.get_inputs()[0].name
+    output_name = session.get_outputs()[0].name
+except Exception as e:
+    print(f"Error loading ONNX model: {e}")
+
+# Define the pydantic model for incoming board state
 class BoardState(BaseModel):
     state: list
 
@@ -36,34 +36,32 @@ class BoardState(BaseModel):
 def read_root():
     return {"message": "Mancala Agent API"}
 
+def predict_onnx(state: np.ndarray) -> np.ndarray:
+    """Perform inference using ONNX Runtime."""
+    outputs = session.run([output_name], {input_name: state.astype(np.float32)})
+    return outputs[0]
+
 @app.post("/best_move/")
 def get_best_move(board_state: BoardState):
+    # Validate board shape
     if len(board_state.state) != 15:
         raise HTTPException(status_code=400, detail="Input shape must be (15,)")
     
-    # The board should be switched between 0 and 1 to match the agent's training data.
-    # In the web app, the AI is always 1, so we need to switch the board if the AI is "actually" 0.
-    if (board_state.state[-1] == 0): 
-        for i in range(0, 7):
-            temp = board_state.state[i]
-            board_state.state[i] = board_state.state[i + 7]
-            board_state.state[i + 7] = temp
+    # Switch board positions between player 0 and player 1 if needed
+    if board_state.state[-1] == 0:
+        for i in range(7):
+            board_state.state[i], board_state.state[i + 7] = board_state.state[i + 7], board_state.state[i]
     
-    print(board_state)
-
     try:
-        state = np.array(board_state.state)
-        if state.shape[0] != 15:
-            raise HTTPException(status_code=400, detail="Input shape must be (15,)")
-        state = state.reshape(1, -1)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=f"Invalid input: {str(e)}")
+        # Reshape input into a 2D array
+        state_array = np.array(board_state.state).reshape(1, -1)
+        
+        # Run inference
+        act_values = predict_onnx(state_array)
+        
+        # Get best moves by sorting output predictions
+        best_moves = np.argsort(act_values[0])[::-1].tolist()
+        
+        return {"best_moves": best_moves}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Unexpected error: {str(e)}")
-    
-    act_values = agent.predict(state, verbose=0)
-
-    # create a list of all of the best moves by order
-    best_moves = np.argsort(act_values[0])[::-1].tolist()
-
-    return {"best_moves": best_moves}
+        raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")

@@ -1,7 +1,7 @@
 'use server'
 import axios from 'axios';
 
-const apiUrlGlobal = '';
+const apiUrlGlobal = 'https://python-api-mancala.vercel.app/best_move/';
 const apiUrlLocal = 'http://127.0.0.1:8000/best_move/';
 const apiUrl = process.env.NODE_ENV === 'production' ? apiUrlGlobal : apiUrlLocal;
 
