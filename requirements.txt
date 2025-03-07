@@ -1,4 +1,7 @@
-fastapi>=0.70.0
-tensorflow>=2.0
+fastapi
+tensorflow==2.18.0
 numpy
 matplotlib
+onnxruntime
+tf2onnx
+onnx
