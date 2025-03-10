@@ -34,8 +34,6 @@ export class GameController {
         // Set a timeout for the AI thinking delay. Used to simulate the AI thinking process and make the AI moves clearer.
         this.aiThinkingTimeout = setTimeout(async () => {
             const player_indicator = this.model.started === 'user' ? 1 : 0;
-            console.log(player_indicator);
-            console.log(this.model.board);
 
             // reqParams: [board, player_indicator] to the API
             const reqParams: number[] = [...this.model.board, player_indicator];
@@ -49,7 +47,6 @@ export class GameController {
                 {
                     // Although in the training we had switched according to the position, here visually the agent is always the one above
                     const moveIndex = aiMoves[i] + 7; 
-                    console.log(this.model.isValidMove(moveIndex, 'ai'));
                     if (this.model.isValidMove(moveIndex, 'ai')) 
                     {
                         this.model.makeMove(moveIndex);
