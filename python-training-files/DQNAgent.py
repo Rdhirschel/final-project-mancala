@@ -76,27 +76,27 @@ class DQNAgent:
         priority = 1.0  # Assign high priority to new samples
         self.memory.store((state, action, reward, next_state, done), priority)
 
-    def act(self, state, valid_actions):
+    def act(self, state, actions):
         """
         Returns a list of candidate actions (local indices) sorted by descending Q-value.
-        If epsilon-greedy triggers, simply returns a shuffled version of valid_actions.
+        If epsilon-greedy triggers, simply returns a shuffled version of actions.
         """
 
         # If no valid actions, return an empty list
-        if not valid_actions:
+        if not actions:
             return []
         
         # Epsilon-greedy strategy
         if np.random.rand() <= self.epsilon:
-            random.shuffle(valid_actions)
-            return valid_actions
+            random.shuffle(actions)
+            return actions
         
         # Get Q-values for the current state
         state = state.reshape(1, -1)
         act_values = self.model.predict(state, verbose=0)
 
         # Rank valid actions by their Q-values in descending order
-        ranked = sorted(valid_actions, key=lambda a: act_values[0][a], reverse=True)
+        ranked = sorted(actions, key=lambda a: act_values[0][a], reverse=True)
         return ranked
 
     def replay(self):

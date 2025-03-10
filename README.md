@@ -42,10 +42,13 @@ For further details on the project documentation including development decisions
 
 - **requirements.txt:**  
     Contains Python dependencies:
-    fastapi>=0.70.0  
-    tensorflow>=2.0  
-    numpy  
+    fastapi
+    tensorflow==2.18.0
+    numpy
     matplotlib
+    onnxruntime
+    tf2onnx
+    onnx
 
 - **package.json:**  
 Manages the frontend dependencies such as Next.js, React, Tailwind CSS, and Lucide Icons.

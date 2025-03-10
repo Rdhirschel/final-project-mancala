@@ -3,9 +3,9 @@ import numpy as np
 class SumTree:
     def __init__(self, capacity):
         """Initializes the SumTree."""
-        self.capacity = capacity
-        self.tree = np.zeros(2 * capacity - 1) # Stores the sum of priorities
-        self.data = np.zeros(capacity, dtype=object)
+        self.capacity = capacity # the total capacity of the tree
+        self.tree = np.zeros(2 * capacity - 1) # the tree structure that stores the sum of priorities (n + n/2 + n/4 + ... + 1 = 2n - 1)
+        self.data = np.zeros(capacity, dtype=object) # stores the data that was added to the tree
         self.write = 0 # Current index to write data
         self.size = 0 # Current size of the tree
 
@@ -14,7 +14,7 @@ class SumTree:
         """Propagates the change in priority up the tree. This is done by updating recursively the sum of priorities."""
         parent = (idx - 1) // 2
         self.tree[parent] += change
-        if parent != 0: # Propagate the change up to the root, unless we are at the root node
+        if parent != 0: # Stop condition
             self._propagate(parent, change)
 
     def _retrieve(self, idx, s):
@@ -23,7 +23,8 @@ class SumTree:
         right = left + 1
         if left >= len(self.tree): # If the left child index is out of bounds, we are at a leaf node. Return the current index
             return idx
-        if s <= self.tree[left]: # If the s, which is the priority, is less than the left child, we move to the left child. This is because the left child has higher priority, so we want to explore that branch
+        if s <= self.tree[left]: # If the s, which is the priority, is less than the left child, we move to the left child. 
+                                 # This is because the left child has higher priority, so we want to explore that branch
             return self._retrieve(left, s)
         else: # Otherwise, we move to the right child. We subtract the left child's priority from s, so that we can explore the right child's branch
             return self._retrieve(right, s - self.tree[left])

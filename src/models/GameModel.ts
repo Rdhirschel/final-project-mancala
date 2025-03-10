@@ -99,9 +99,7 @@ export class GameModel
         }
 
         // Check for an extra turn
-        const extraTurn =
-            (this.currentPlayer === "user" && lastStoneIndex === 6) ||
-            (this.currentPlayer === "ai" && lastStoneIndex === 13);
+        const extraTurn = (this.currentPlayer === "user" && lastStoneIndex === 6) || (this.currentPlayer === "ai" && lastStoneIndex === 13);
 
         // Stealing rule
         if (!extraTurn && this.board[lastStoneIndex] === 1) 
@@ -155,15 +153,9 @@ export class GameModel
         this.board[6] += userStones;
         this.board[13] += aiStones;
 
-        for (let i = 0; i < 6; i++) 
-        {
-            this.board[i] = 0;
-        }
-
-        for (let i = 7; i < 13; i++) 
-        {
-            this.board[i] = 0;
-        }
+        for (let i = 0; i < 14; i++)
+            if (i % 7 !== 6)
+                this.board[i] = 0;
 
         this.gameOver = true;
 

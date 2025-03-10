@@ -1,9 +1,7 @@
 import os
-import numpy as np
 import tensorflow as tf
-from tensorflow.keras.utils import register_keras_serializable
+from tensorflow.keras.utils import register_keras_serializable # type: ignore
 import tf2onnx
-import onnx
 
 # Define custom function
 @register_keras_serializable()

@@ -68,6 +68,7 @@ class GameView extends React.Component<GameViewProps, State> {
         }
     }
 
+    // This method is called after the component has been rendered to the DOM.
     componentDidMount() {
         document.body.style.overflow = "hidden";
         document.addEventListener("keydown", this.handleKeyDown);
@@ -112,6 +113,7 @@ class GameView extends React.Component<GameViewProps, State> {
         });
     }
 
+    // This method is called before the component is removed from the DOM.
     componentWillUnmount() {
         document.body.style.overflow = "auto";
         document.removeEventListener("keydown", this.handleKeyDown);
@@ -121,8 +123,10 @@ class GameView extends React.Component<GameViewProps, State> {
         }
     }
 
+    // This method is called when the media query for the color scheme changes. It updates the theme based on the system preference. 
+    // media query: A CSS media query that can be used to check the user's system preferences.
     handleMediaQueryChange() {
-        this.forceUpdate();
+        this.forceUpdate(); // Force update to recompute the theme. This is inherited from React.Component.
     }
 
     getComputedTheme() {
@@ -130,6 +134,7 @@ class GameView extends React.Component<GameViewProps, State> {
         return theme === "system" ? computedTheme : theme;
     }
 
+    // This method returns the color scheme based on the current theme. It returns an object with color classes for different elements.
     getColorScheme() {
         const isDark = this.getComputedTheme() === "dark";
         return {
@@ -170,7 +175,7 @@ class GameView extends React.Component<GameViewProps, State> {
 
     startGame(playerFirst: "user" | "ai") {
         this.controller.resetGame(playerFirst);
-        this.setState({ gameStarted: true });
+        this.setState({ gameStarted: true }); // setState method inherited from React.Component.
     }
 
     resetGame() {
