@@ -35,8 +35,7 @@ class PrioritizedReplayBuffer:
         # Compute importance-sampling weights according to the PER formula
         total_p = self.tree.total_priority()
         sampling_probabilities = np.array(priorities) / total_p
-        min_probability = np.min(sampling_probabilities)
-        is_weights = (min_probability / sampling_probabilities) ** beta
+        is_weights = (sampling_probabilities * self.size()) ** -beta
 
         return batch, indices, is_weights
 

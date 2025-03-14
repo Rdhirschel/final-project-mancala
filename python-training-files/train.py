@@ -10,7 +10,7 @@ random.seed(42)
 np.random.seed(42)
 tf.random.set_seed(42)
 
-def train_agent(episodes=750):
+def train_agent(episodes=5000):
     """Trains a DQN agent to play Mancala."""
     
     agent = DQNAgent(15, 6)  # State size = 15: board + current player indicator
